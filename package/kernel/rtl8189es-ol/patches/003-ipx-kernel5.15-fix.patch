@@ -1,0 +1,30 @@
+--- a/core/rtw_br_ext.c
++++ b/core/rtw_br_ext.c
+@@ -17,7 +17,9 @@
+ #ifdef __KERNEL__
+ 	#include <linux/if_arp.h>
+ 	#include <net/ip.h>
++#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 15, 0)
+ 	#include <net/ipx.h>
++#endif
+ 	#include <linux/atalk.h>
+ 	#include <linux/udp.h>
+ 	#include <linux/if_pppox.h>
+@@ -887,7 +889,7 @@
+ 			return -1;
+ 		}
+ 	}
+-
++#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 15, 0)
+ 	/*---------------------------------------------------*/
+ 	/*         Handle IPX and Apple Talk frame          */
+ 	/*---------------------------------------------------*/
+@@ -1108,7 +1110,7 @@
+ 
+ 		return -1;
+ 	}
+-
++#endif
+ 	/*---------------------------------------------------*/
+ 	/*                Handle PPPoE frame                */
+ 	/*---------------------------------------------------*/
