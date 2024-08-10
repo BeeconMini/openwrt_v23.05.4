@@ -37,11 +37,12 @@ define Package/openwrt-keyring/install
 endef
 else
 define Package/openwrt-keyring/install
-	$(INSTALL_DIR) $(1)/etc/opkg/keys/
+	$(INSTALL_DIR) $(1)/etc/opkg/keys/ $(1)/etc/apk/keys/
 	# Public usign key for unattended snapshot builds
 	$(INSTALL_DATA) $(PKG_BUILD_DIR)/usign/b5043e70f9a75cde $(1)/etc/opkg/keys/
 	# Public usign key for 24.10 release builds
 	$(INSTALL_DATA) $(PKG_BUILD_DIR)/usign/d310c6f2833e97f7 $(1)/etc/opkg/keys/
+	$(INSTALL_DATA) $(PKG_BUILD_DIR)/apk/buildbot.aparcar.org.pem $(1)/etc/apk/keys/
 endef
 endif
 
