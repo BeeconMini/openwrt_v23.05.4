@@ -13,6 +13,7 @@ define KernelPackage/leds-ktd202x
   TITLE:=KDT-2026/7 LED controller support
   FILES:= $(PKG_BUILD_DIR)/leds-ktd202x.ko
   AUTOLOAD:=$(call AutoProbe,leds-ktd202x,1)
+  DEPENDS:=+kmod-i2c-core +kmod-regmap-i2c
 endef
 
 define KernelPackage/leds-ktd202x/description
