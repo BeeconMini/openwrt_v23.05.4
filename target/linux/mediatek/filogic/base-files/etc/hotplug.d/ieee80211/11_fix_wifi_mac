@@ -4,7 +4,6 @@ PHYNBR=${DEVPATH##*/phy}
 
 [ -n $PHYNBR ] || exit 0
 
-. /lib/functions.sh
 . /lib/functions/system.sh
 
 board=$(board_name)
@@ -17,11 +16,15 @@ case "$board" in
 		[ "$PHYNBR" = "0" ] && macaddr_add $addr 1 > /sys${DEVPATH}/macaddress
 		[ "$PHYNBR" = "1" ] && macaddr_setbit_la $addr > /sys${DEVPATH}/macaddress
 		;;
-	acer,predator-w6)
-		key_path="/var/qcidata/data"
-		[ "$PHYNBR" = "0" ] && cat $key_path/2gMAC > /sys${DEVPATH}/macaddress
-		[ "$PHYNBR" = "1" ] && cat $key_path/6gMAC > /sys${DEVPATH}/macaddress
-		[ "$PHYNBR" = "2" ] && cat $key_path/5gMAC > /sys${DEVPATH}/macaddress
+	acer,predator-w6|\
+	acer,vero-w6m)
+		[ "$PHYNBR" = "0" ] && mmc_get_mac_ascii u-boot-env 2gMAC > /sys${DEVPATH}/macaddress
+		[ "$PHYNBR" = "1" ] && mmc_get_mac_ascii u-boot-env 6gMAC > /sys${DEVPATH}/macaddress
+		[ "$PHYNBR" = "2" ] && mmc_get_mac_ascii u-boot-env 5gMAC > /sys${DEVPATH}/macaddress
+		;;
+	acer,predator-w6d)
+		[ "$PHYNBR" = "0" ] && mmc_get_mac_ascii u-boot-env 2gMAC > /sys${DEVPATH}/macaddress
+		[ "$PHYNBR" = "1" ] && mmc_get_mac_ascii u-boot-env 5gMAC > /sys${DEVPATH}/macaddress
 		;;
 	asus,rt-ax59u)
 		CI_UBIPART="UBI_DEV"
