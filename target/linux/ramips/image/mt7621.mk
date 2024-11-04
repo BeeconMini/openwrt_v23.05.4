@@ -405,6 +405,7 @@ define Device/asus_rp-ac56
   IMAGE/factory.bin := append-kernel | append-rootfs | pad-rootfs | check-size
   IMAGE/sysupgrade.bin := append-kernel | append-rootfs | pad-rootfs | \
         check-size | append-metadata
+  DEFAULT := n
 endef
 TARGET_DEVICES += asus_rp-ac56
 
@@ -664,6 +665,7 @@ define Device/buffalo_wsr-600dhp
   DEVICE_MODEL := WSR-600DHP
   DEVICE_PACKAGES := kmod-mt7603 kmod-rt2800-pci -uboot-envtools
   SUPPORTED_DEVICES += wsr-600
+  DEFAULT := n
 endef
 TARGET_DEVICES += buffalo_wsr-600dhp
 
@@ -1557,6 +1559,7 @@ define Device/iodata_wn-ax1167gr
   ARTIFACT/initramfs-factory.bin := append-image-stage initramfs-kernel.bin | \
 	check-size 7680k | senao-header -r 0x30a -p 0x1055 -t 4
   DEVICE_PACKAGES := kmod-mt7603 kmod-mt76x2 -uboot-envtools
+  DEFAULT := n
 endef
 TARGET_DEVICES += iodata_wn-ax1167gr
 
@@ -1648,6 +1651,7 @@ define Device/iodata_wn-gx300gr
   DEVICE_VENDOR := I-O DATA
   DEVICE_MODEL := WN-GX300GR
   DEVICE_PACKAGES := kmod-mt7603 -uboot-envtools
+  DEFAULT := n
 endef
 TARGET_DEVICES += iodata_wn-gx300gr
 
@@ -1937,6 +1941,7 @@ define Device/linksys_re6500
   DEVICE_MODEL := RE6500
   DEVICE_PACKAGES := kmod-mt76x2 -uboot-envtools
   SUPPORTED_DEVICES += re6500
+  DEFAULT := n
 endef
 TARGET_DEVICES += linksys_re6500
 
@@ -2120,6 +2125,7 @@ define Device/netgear_ex6150
   IMAGE_SIZE := 14848k
   IMAGES += factory.chk
   IMAGE/factory.chk := $$(sysupgrade_bin) | check-size | netgear-chk
+  DEFAULT := n
 endef
 TARGET_DEVICES += netgear_ex6150
 
@@ -2806,6 +2812,7 @@ define Device/tplink_re350-v1
   TPLINK_BOARD_ID := RE350-V1
   IMAGE_SIZE := 6016k
   SUPPORTED_DEVICES += re350-v1
+  DEFAULT := n
 endef
 TARGET_DEVICES += tplink_re350-v1
 
@@ -2851,6 +2858,7 @@ define Device/tplink_tl-wpa8631p-v3
 	-uboot-envtools
   TPLINK_BOARD_ID := TL-WPA8631P-V3
   IMAGE_SIZE := 7232k
+  DEFAULT := n
 endef
 TARGET_DEVICES += tplink_tl-wpa8631p-v3
 
@@ -3533,6 +3541,7 @@ define Device/zyxel_wap6805
   DEVICE_MODEL := WAP6805
   DEVICE_PACKAGES := kmod-mt7603 kmod-mt7621-qtn-rgmii -uboot-envtools
   KERNEL := $$(KERNEL/lzma-loader) | uImage none | uimage-padhdr 160
+  DEFAULT := n
 endef
 TARGET_DEVICES += zyxel_wap6805
 
