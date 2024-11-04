@@ -1,0 +1,13 @@
+Use driver defined max MTU which enables support for mini jumbo
+frames as in RFC4638.
+
+--- a/dcdp/ptm_tc.c	2023-12-17 16:11:22.503500398 +1100
++++ b/dcdp/ptm_tc.c	2024-01-26 16:48:49.881623474 +1100
+@@ -657,6 +657,7 @@ static void ptm_setup(struct net_device
+ 	ether_setup(dev);
+ 	dev->watchdog_timeo = 10 * HZ;
+ 	dev->netdev_ops = &g_ptm_netdev_ops;
++	dev->max_mtu = MAX_MTU;
+ }
+ 
+ static int ptm_dev_init(struct tc_priv *tc_priv, u32 id,
