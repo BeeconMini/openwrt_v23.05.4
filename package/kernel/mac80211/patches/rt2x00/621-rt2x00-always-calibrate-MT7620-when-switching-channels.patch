@@ -1,0 +1,67 @@
+--- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+@@ -63,6 +63,9 @@ MODULE_PARM_DESC(watchdog, "Enable watch
+ 	rt2800_regbusy_read((__dev), H2M_MAILBOX_CSR, \
+ 			    H2M_MAILBOX_CSR_OWNER, (__reg))
+ 
++static void rt2800_calibration_rt6352_stage1(struct rt2x00_dev *rt2x00dev);
++static void rt2800_calibration_rt6352_stage2(struct rt2x00_dev *rt2x00dev);
++
+ static inline bool rt2800_is_305x_soc(struct rt2x00_dev *rt2x00dev)
+ {
+ 	/* check for rt2872 on SoC */
+@@ -4186,6 +4189,10 @@ static void rt2800_config_channel(struct
+ 	u32 tx_pin;
+ 	u8 bbp, rfcsr;
+ 
++	if(rt2x00_rt(rt2x00dev, RT6352) &&
++	   !test_bit(DEVICE_STATE_SCANNING, &rt2x00dev->flags))
++		rt2800_calibration_rt6352_stage1(rt2x00dev);
++
+ 	info->default_power1 = rt2800_txpower_to_dev(rt2x00dev, rf->channel,
+ 						     info->default_power1);
+ 	info->default_power2 = rt2800_txpower_to_dev(rt2x00dev, rf->channel,
+@@ -4580,6 +4587,10 @@ static void rt2800_config_channel(struct
+ 		rt2x00_set_field8(&bbp, BBP49_UPDATE_FLAG, 0);
+ 		rt2800_bbp_write(rt2x00dev, 49, bbp);
+ 	}
++
++	if(rt2x00_rt(rt2x00dev, RT6352) &&
++	   !test_bit(DEVICE_STATE_SCANNING, &rt2x00dev->flags))
++		rt2800_calibration_rt6352_stage2(rt2x00dev);
+ }
+ 
+ static int rt2800_get_gain_calibration_delta(struct rt2x00_dev *rt2x00dev)
+@@ -10418,15 +10429,19 @@ static void rt2800_restore_rf_bbp_rt6352
+ 	}
+ }
+ 
+-static void rt2800_calibration_rt6352(struct rt2x00_dev *rt2x00dev)
++static void rt2800_calibration_rt6352_stage1(struct rt2x00_dev *rt2x00dev)
+ {
+-	u32 reg;
+-
+ 	if (rt2x00_has_cap_external_pa(rt2x00dev) ||
+ 	    rt2x00_has_cap_external_lna_bg(rt2x00dev))
+ 		rt2800_restore_rf_bbp_rt6352(rt2x00dev);
+ 
+ 	rt2800_r_calibration(rt2x00dev);
++}
++
++static void rt2800_calibration_rt6352_stage2(struct rt2x00_dev *rt2x00dev)
++{
++	u32 reg;
++
+ 	rt2800_rf_self_txdc_cal(rt2x00dev);
+ 	rt2800_rxdcoc_calibration(rt2x00dev);
+ 	rt2800_bw_filter_calibration(rt2x00dev, true);
+@@ -10757,9 +10772,6 @@ static void rt2800_init_rfcsr_6352(struc
+ 
+ 	rt2800_rfcsr_write_dccal(rt2x00dev, 5, 0x00);
+ 	rt2800_rfcsr_write_dccal(rt2x00dev, 17, 0x7C);
+-
+-	/* Do calibration and init PA/LNA */
+-	rt2800_calibration_rt6352(rt2x00dev);
+ }
+ 
+ static void rt2800_init_rfcsr(struct rt2x00_dev *rt2x00dev)

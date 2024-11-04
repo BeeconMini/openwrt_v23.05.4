@@ -1,0 +1,43 @@
+--- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+@@ -5563,8 +5563,17 @@ static void rt2800_config_txpower(struct
+ 
+ void rt2800_gain_calibration(struct rt2x00_dev *rt2x00dev)
+ {
+-	rt2800_config_txpower(rt2x00dev, rt2x00dev->hw->conf.chandef.chan,
+-			      rt2x00dev->tx_power);
++	if(rt2x00_rt(rt2x00dev, RT2860) ||
++	   rt2x00_rt(rt2x00dev, RT2872) ||
++	   rt2x00_rt(rt2x00dev, RT2883) ||
++	   rt2x00_rt(rt2x00dev, RT3070) ||
++	   rt2x00_rt(rt2x00dev, RT3071) ||
++	   rt2x00_rt(rt2x00dev, RT3090) ||
++	   rt2x00_rt(rt2x00dev, RT3572) ||
++	   rt2x00_rt(rt2x00dev, RT3593) ||
++	   rt2x00_rt(rt2x00dev, RT3883))
++		rt2800_config_txpower(rt2x00dev, rt2x00dev->hw->conf.chandef.chan,
++				      rt2x00dev->tx_power);
+ }
+ EXPORT_SYMBOL_GPL(rt2800_gain_calibration);
+ 
+@@ -5764,9 +5773,10 @@ static u8 rt2800_get_default_vgc(struct
+ 		    rt2x00_rt(rt2x00dev, RT3593) ||
+ 		    rt2x00_rt(rt2x00dev, RT5390) ||
+ 		    rt2x00_rt(rt2x00dev, RT5392) ||
+-		    rt2x00_rt(rt2x00dev, RT5592) ||
+-		    rt2x00_rt(rt2x00dev, RT6352))
++		    rt2x00_rt(rt2x00dev, RT5592))
+ 			vgc = 0x1c + (2 * rt2x00dev->lna_gain);
++		else if(rt2x00_rt(rt2x00dev, RT6352))
++			vgc = 0x04 + (2 * rt2x00dev->lna_gain);
+ 		else
+ 			vgc = 0x2e + rt2x00dev->lna_gain;
+ 	} else { /* 5GHZ band */
+@@ -5841,6 +5851,7 @@ void rt2800_link_tuner(struct rt2x00_dev
+ 		break;
+ 
+ 	case RT3883:
++	case RT6352:
+ 		if (qual->rssi > -65)
+ 			vgc += 0x10;
+ 		break;
