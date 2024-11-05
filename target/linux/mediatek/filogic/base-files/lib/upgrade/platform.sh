@@ -177,6 +177,12 @@ platform_do_upgrade() {
 			;;
 		esac
 		;;
+	beeconmini,seed-ac2)
+		CI_KERNPART="kernel"
+		CI_ROOTPART="rootfs"
+		CI_DATAPART="rootfs_data"
+		emmc_do_upgrade "$1"
+		;;
 	*)
 		nand_do_upgrade "$1"
 		;;
@@ -219,6 +225,7 @@ platform_copy_config() {
 			;;
 		esac
 		;;
+	beeconmini,seed-ac2|\
 	glinet,gl-mt6000|\
 	jdcloud,re-cp-03|\
 	ubnt,unifi-6-plus)
