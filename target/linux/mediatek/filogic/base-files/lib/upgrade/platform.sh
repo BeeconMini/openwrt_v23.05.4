@@ -177,6 +177,7 @@ platform_do_upgrade() {
 			;;
 		esac
 		;;
+	beeconmini,seed-ac3|\
 	beeconmini,seed-ac2)
 		CI_KERNPART="kernel"
 		CI_ROOTPART="rootfs"
@@ -225,6 +226,7 @@ platform_copy_config() {
 			;;
 		esac
 		;;
+	beeconmini,seed-ac3|\
 	beeconmini,seed-ac2|\
 	glinet,gl-mt6000|\
 	jdcloud,re-cp-03|\
